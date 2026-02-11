@@ -1,6 +1,7 @@
-package ru.otus.service;
+package ru.otus.unit.service;
 
 import ru.otus.dao.QuestionDao;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 import ru.otus.services.QuestionService;
 import ru.otus.services.QuestionServiceImpl;
@@ -23,8 +24,13 @@ public class QuestionServiceImplTest {
             @Override
             public List<Question> findAll() {
                 return Arrays.asList(
-                        new Question("Test question 1?", Arrays.asList("Answer 1", "Answer 2")),
-                        new Question("Test question 2?", Arrays.asList("Answer A", "Answer B", "Answer C"))
+                        new Question("Test question 1?", Arrays.asList(new Answer("Answer 1", true),
+                                new Answer("Answer 2", false)
+                        )),
+                        new Question("Test question 2?", Arrays.asList(new Answer("Answer A", false),
+                                new Answer("Answer B", true),
+                                new Answer("Answer C", false)
+                        ))
                 );
             }
         };

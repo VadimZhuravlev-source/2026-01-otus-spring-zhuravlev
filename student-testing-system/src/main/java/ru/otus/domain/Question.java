@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Question {
     private final String text;
-    private final List<String> answerOptions;
+    private final List<Answer> answerOptions;
 
-    public Question(String text, List<String> answerOptions) {
+    public Question(String text, List<Answer> answerOptions) {
         this.text = text;
         this.answerOptions = answerOptions;
     }
@@ -15,11 +15,12 @@ public class Question {
         return text;
     }
 
-    public List<String> getAnswerOptions() {
+    public List<Answer> getAnswerOptions() {
         return answerOptions;
     }
 
     public boolean hasOptions() {
         return answerOptions != null && !answerOptions.isEmpty();
     }
+
 }
