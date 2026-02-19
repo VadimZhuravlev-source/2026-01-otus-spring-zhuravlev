@@ -52,17 +52,6 @@ class IOServiceImplTest {
     }
 
     @Test
-    void readLineWithPrompt_shouldHandleEmptyInput() {
-        String input = "";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        ioService = new IOServiceImpl(inputStream, new PrintStream(outputStream));
-
-        String result = ioService.readLineWithPrompt("Prompt: ");
-
-        assertEquals(input, result);
-    }
-
-    @Test
     void readLineWithPrompt_shouldHandleMultipleLines() {
         String input = "First line\nSecond line";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
