@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: student-testing-system-spring-boot
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+locale:
+  default: en_US
+# Questions CSV file path
+questions:
+  csv:
+    base-path: classpath:questions
+
+  # Testing configuration
+testing:
+  passing:
+    score: 2
+  total:
+    questions: 3

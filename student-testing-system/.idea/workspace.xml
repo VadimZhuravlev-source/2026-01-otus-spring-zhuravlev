@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="652c5a36-00eb-46cb-8d5e-5f343eeee2d0" name="Changes" comment="dfdf" />
+    <list default="true" id="652c5a36-00eb-46cb-8d5e-5f343eeee2d0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,13 +22,20 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/.." value="student-testing-system" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "VadimZhuravlev-source"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/VadimZhuravlev-source/2026-01-otus-spring-zhuravlev.git",
+    "accountId": "1226bae9-98b7-4363-97f0-39d82cdd95b7"
+  }
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -50,22 +60,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.ru.otus.Main.executor": "Run",
-    "Maven.student-testing-system [clean,package].executor": "Run",
-    "Maven.student_testing [clean,package].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "student-testing-system",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/Development/2026-01-otus-spring-zhuravlev/student-testing-system",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ru.otus.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ApplicationConfigTest.testQuestionsLoadedFromCSV.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.QuestionServiceImplTest.testGetAllQuestions.executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.student-testing-system [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.student_testing [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/education/2026-01-otus-spring-zhuravlev/student-testing-system&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;http.proxy&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.ru.otus.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
@@ -93,9 +104,43 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ApplicationConfigTest.testQuestionsLoadedFromCSV" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="student-testing-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.config" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.config.ApplicationConfigTest" />
+      <option name="METHOD_NAME" value="testQuestionsLoadedFromCSV" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="QuestionServiceImplTest.testGetAllQuestions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="student-testing-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.service.QuestionServiceImplTest" />
+      <option name="METHOD_NAME" value="testGetAllQuestions" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ru.otus.Main" />
+        <item itemvalue="JUnit.ApplicationConfigTest.testQuestionsLoadedFromCSV" />
+        <item itemvalue="JUnit.QuestionServiceImplTest.testGetAllQuestions" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -109,19 +154,6 @@
       <option name="presentableId" value="Default" />
       <updated>1726757365256</updated>
     </task>
-    <task id="LOCAL-00001" summary="dfdf">
-      <option name="closed" value="true" />
-      <created>1768985766560</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1768985766560</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="dfdf" />
-    <option name="LAST_COMMIT_MESSAGE" value="dfdf" />
   </component>
 </project>
