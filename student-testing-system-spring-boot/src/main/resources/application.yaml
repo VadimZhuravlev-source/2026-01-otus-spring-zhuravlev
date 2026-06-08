@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: student-testing-system-spring-boot
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+locale:
+  default: ru #en_US
+# Questions CSV file path
+questions:
+  csv:
+    base-path: classpath:questions
+
+  # Testing configuration
+testing:
+  passing:
+    score: 3
+  total:
+    questions: 5

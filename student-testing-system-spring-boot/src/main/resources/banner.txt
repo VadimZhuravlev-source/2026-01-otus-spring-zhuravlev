@@ -1,0 +1,6 @@
+${AnsiColor.BRIGHT_RED}========================================
+${AnsiColor.BRIGHT_YELLOW}    STUDENT TESTING SYSTEM
+${AnsiColor.BRIGHT_GREEN}    Система тестирования студентов
+${AnsiColor.BRIGHT_CYAN}========================================
+${AnsiColor.BRIGHT_BLUE}Spring Boot ${AnsiColor.BRIGHT_MAGENTA}${spring-boot.version}
+${AnsiColor.DEFAULT}
