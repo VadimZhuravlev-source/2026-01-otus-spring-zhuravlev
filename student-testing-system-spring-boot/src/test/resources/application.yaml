@@ -5,7 +5,9 @@ spring:
     basename: messages
     encoding: UTF-8
     fallback-to-system-locale: false
-
+  shell:
+    interactive:
+      enabled: false
 locale:
   default: en_US
 # Questions CSV file path
