@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarytestdb;DB_CLOSE_DELAY=-1
+  sql:
+    init:
+      data-locations: classpath:data-test.sql
+      mode: embedded
+  shell:
+    interactive:
+      enabled: false
