@@ -91,14 +91,14 @@ public class LibraryCommands {
 
     private String formatBook(Book book) {
         return "%d. %s | %s | %s".formatted(
-                book.id(), book.title(), book.author().fullName(), book.genre().name());
+                book.getId(), book.getTitle(), book.getAuthor().getFullName(), book.getGenre().getName());
     }
 
     private String formatAuthor(Author author) {
-        return "%d. %s".formatted(author.id(), author.fullName());
+        return "%d. %s".formatted(author.getId(), author.getFullName());
     }
 
     private String formatGenre(Genre genre) {
-        return "%d. %s".formatted(genre.id(), genre.name());
+        return "%d. %s".formatted(genre.getId(), genre.getName());
     }
 }

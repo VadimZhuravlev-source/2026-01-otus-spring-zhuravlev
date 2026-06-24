@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import ru.otus.library_books.domain.Author;
-import ru.otus.library_books.domain.Genre;
 
 @Repository
 public class JdbcAuthorRepository implements AuthorRepository {
