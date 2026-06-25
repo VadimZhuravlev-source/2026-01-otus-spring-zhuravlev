@@ -31,8 +31,8 @@ class AuthorServiceTest {
 
         var author = authorService.create("Leo Tolstoy");
 
-        assertThat(author.id()).isEqualTo(4);
-        assertThat(author.fullName()).isEqualTo("Leo Tolstoy");
+        assertThat(author.getId()).isEqualTo(4);
+        assertThat(author.getFullName()).isEqualTo("Leo Tolstoy");
         verify(authorRepository).insert("Leo Tolstoy");
     }
 }

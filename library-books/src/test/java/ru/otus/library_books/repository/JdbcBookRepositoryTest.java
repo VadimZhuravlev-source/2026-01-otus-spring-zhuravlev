@@ -26,9 +26,9 @@ class JdbcBookRepositoryTest {
         assertThat(books).hasSize(3);
         var book = new Book(1L,"dfdf", new Author(2, "fdfd"),new Genre(1, "222"));
         var firstBook = books.stream().findFirst().orElse(book);
-        assertThat(firstBook.title()).isEqualTo("Crime and Punishment");
-        assertThat(firstBook.author().fullName()).isEqualTo("Fyodor Dostoevsky");
-        assertThat(firstBook.genre().name()).isEqualTo("Novel");
+        assertThat(firstBook.getTitle()).isEqualTo("Crime and Punishment");
+        assertThat(firstBook.getAuthor().getFullName()).isEqualTo("Fyodor Dostoevsky");
+        assertThat(firstBook.getGenre().getName()).isEqualTo("Novel");
 
 
     }
@@ -37,17 +37,17 @@ class JdbcBookRepositoryTest {
     @DisplayName("should create update and delete book")
     void shouldCreateUpdateAndDeleteBook() {
         var created = bookRepository.insert("The Idiot", 1, 1);
-        assertThat(created.id()).isPositive();
-        assertThat(created.title()).isEqualTo("The Idiot");
+        assertThat(created.getId()).isPositive();
+        assertThat(created.getTitle()).isEqualTo("The Idiot");
 
-        var updated = bookRepository.update(created.id(), "Journey to the Center of the Earth", 2, 2);
+        var updated = bookRepository.update(created.getId(), "Journey to the Center of the Earth", 2, 2);
 
-        assertThat(updated.title()).isEqualTo("Journey to the Center of the Earth");
-        assertThat(updated.author().fullName()).isEqualTo("Jules Verne");
-        assertThat(updated.genre().name()).isEqualTo("Adventure");
+        assertThat(updated.getTitle()).isEqualTo("Journey to the Center of the Earth");
+        assertThat(updated.getAuthor().getFullName()).isEqualTo("Jules Verne");
+        assertThat(updated.getGenre().getName()).isEqualTo("Adventure");
 
-        bookRepository.deleteById(created.id());
+        bookRepository.deleteById(created.getId());
 
-        assertThat(bookRepository.findById(created.id())).isEmpty();
+        assertThat(bookRepository.findById(created.getId())).isEmpty();
     }
 }

@@ -31,8 +31,8 @@ class GenreServiceTest {
 
         var genre = genreService.create("Drama");
 
-        assertThat(genre.id()).isEqualTo(4);
-        assertThat(genre.name()).isEqualTo("Drama");
+        assertThat(genre.getId()).isEqualTo(4);
+        assertThat(genre.getName()).isEqualTo("Drama");
         verify(genreRepository).insert("Drama");
     }
 }
