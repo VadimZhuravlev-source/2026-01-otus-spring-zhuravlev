@@ -3,6 +3,12 @@ spring:
     name: library-books
   datasource:
     url: jdbc:h2:mem:librarydb;DB_CLOSE_DELAY=-1
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
   h2:
     console:
       enabled: true
