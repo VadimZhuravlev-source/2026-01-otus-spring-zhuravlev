@@ -3,6 +3,7 @@ package ru.otus.library_books.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,13 +20,21 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.library_books.domain.Author;
 import ru.otus.library_books.domain.Book;
 import ru.otus.library_books.domain.Genre;
+import ru.otus.library_books.repository.AuthorRepository;
 import ru.otus.library_books.repository.BookRepository;
+import ru.otus.library_books.repository.GenreRepository;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
+    private AuthorRepository authorRepository;
+
+    @Mock
+    private GenreRepository genreRepository;
 
     @InjectMocks
     private BookServiceImpl bookService;
@@ -78,7 +87,9 @@ class BookServiceTest {
         var genre = new Genre(1L, "Psychological Fiction");
         var savedBook = new Book(4L, "The Gambler", author, genre, null);
 
-        when(bookRepository.insert("The Gambler", 1L, 1L)).thenReturn(savedBook);
+        when(authorRepository.getReferenceById(1L)).thenReturn(author);
+        when(genreRepository.getReferenceById(1L)).thenReturn(genre);
+        when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
 
         var result = bookService.create("The Gambler", 1L, 1L);
 
@@ -86,25 +97,36 @@ class BookServiceTest {
         assertThat(result.getTitle()).isEqualTo("The Gambler");
         assertThat(result.getAuthor()).isEqualTo(author);
         assertThat(result.getGenre()).isEqualTo(genre);
-        verify(bookRepository).insert("The Gambler", 1L, 1L);
+        verify(authorRepository).getReferenceById(1L);
+        verify(genreRepository).getReferenceById(1L);
+        verify(bookRepository).save(any(Book.class));
     }
 
     @Test
     @DisplayName("should update book")
     void shouldUpdateBook() {
+        var oldAuthor = new Author(1L, "Fyodor Dostoevsky");
+        var oldGenre = new Genre(1L, "Psychological Fiction");
+        var existingBook = new Book(1L, "Old Title", oldAuthor, oldGenre, null);
         var newAuthor = new Author(2L, "Jules Verne");
         var newGenre = new Genre(2L, "Adventure");
-        var updatedBook = new Book(1L, "New Title", newAuthor, newGenre, null);
+        var savedBook = new Book(1L, "New Title", newAuthor, newGenre, null);
 
-        when(bookRepository.update(1L, "New Title", 2L, 2L)).thenReturn(updatedBook);
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(existingBook));
+        when(authorRepository.getReferenceById(2L)).thenReturn(newAuthor);
+        when(genreRepository.getReferenceById(2L)).thenReturn(newGenre);
+        when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
 
         var result = bookService.update(1L, "New Title", 2L, 2L);
 
-        assertThat(result).isEqualTo(updatedBook);
+        assertThat(result).isEqualTo(savedBook);
         assertThat(result.getTitle()).isEqualTo("New Title");
         assertThat(result.getAuthor()).isEqualTo(newAuthor);
         assertThat(result.getGenre()).isEqualTo(newGenre);
-        verify(bookRepository).update(1L, "New Title", 2L, 2L);
+        verify(bookRepository).findById(1L);
+        verify(authorRepository).getReferenceById(2L);
+        verify(genreRepository).getReferenceById(2L);
+        verify(bookRepository).save(any(Book.class));
     }
 
     @Test

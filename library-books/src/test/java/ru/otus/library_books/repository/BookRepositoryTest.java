@@ -6,15 +6,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.library_books.domain.Book;
 
 @DataJpaTest
-@Import({JPQLBookRepository.class, JPQLAuthorRepository.class, JPQLGenreRepository.class})
 class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Test
     @DisplayName("should find all books")
@@ -33,12 +37,15 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should create update and delete book")
     void shouldCreateUpdateAndDeleteBook() {
-        var book = bookRepository.insert("The Idiot", 1L, 1L);
+        var author = authorRepository.getReferenceById(1L);
+        var genre = genreRepository.getReferenceById(1L);
+        var book = bookRepository.save(new Book(0, "The Idiot", author, genre, null));
 
         assertThat(book.getId()).isPositive();
         assertThat(book.getTitle()).isEqualTo("The Idiot");
 
-        var updatedBook = bookRepository.update(book.getId(), "Updated title", 1L, 1L);
+        book.setTitle("Updated title");
+        var updatedBook = bookRepository.save(book);
 
         assertThat(updatedBook.getTitle()).isEqualTo("Updated title");
 

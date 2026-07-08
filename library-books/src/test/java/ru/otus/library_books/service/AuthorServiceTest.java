@@ -2,6 +2,7 @@ package ru.otus.library_books.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -68,13 +69,13 @@ class AuthorServiceTest {
     @DisplayName("should create author")
     void shouldCreateAuthor() {
         var savedAuthor = new Author(5L, "Leo Tolstoy");
-        when(authorRepository.insert("Leo Tolstoy")).thenReturn(savedAuthor);
+        when(authorRepository.save(any(Author.class))).thenReturn(savedAuthor);
 
         var result = authorService.create("Leo Tolstoy");
 
         assertThat(result).isEqualTo(savedAuthor);
         assertThat(result.getId()).isEqualTo(5L);
         assertThat(result.getFullName()).isEqualTo("Leo Tolstoy");
-        verify(authorRepository).insert("Leo Tolstoy");
+        verify(authorRepository).save(any(Author.class));
     }
 }

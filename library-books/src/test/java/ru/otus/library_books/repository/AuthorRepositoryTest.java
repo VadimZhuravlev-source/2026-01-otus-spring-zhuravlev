@@ -6,11 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.library_books.domain.Author;
 
 @DataJpaTest
-@Import(JPQLAuthorRepository.class)
 class AuthorRepositoryTest {
 
     @Autowired
@@ -29,7 +27,7 @@ class AuthorRepositoryTest {
     @Test
     @DisplayName("should create author")
     void shouldCreateAuthor() {
-        var author = authorRepository.insert("Leo Tolstoy");
+        var author = authorRepository.save(new Author(0, "Leo Tolstoy"));
 
         assertThat(author.getId()).isPositive();
         assertThat(author.getFullName()).isEqualTo("Leo Tolstoy");

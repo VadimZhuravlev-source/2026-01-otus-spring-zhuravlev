@@ -2,6 +2,7 @@ package ru.otus.library_books.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -68,13 +69,13 @@ class GenreServiceTest {
     @DisplayName("should create genre")
     void shouldCreateGenre() {
         var savedGenre = new Genre(5L, "Science Fiction");
-        when(genreRepository.insert("Science Fiction")).thenReturn(savedGenre);
+        when(genreRepository.save(any(Genre.class))).thenReturn(savedGenre);
 
         var result = genreService.create("Science Fiction");
 
         assertThat(result).isEqualTo(savedGenre);
         assertThat(result.getId()).isEqualTo(5L);
         assertThat(result.getName()).isEqualTo("Science Fiction");
-        verify(genreRepository).insert("Science Fiction");
+        verify(genreRepository).save(any(Genre.class));
     }
 }

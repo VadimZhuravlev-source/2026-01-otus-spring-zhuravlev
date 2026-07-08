@@ -6,11 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.library_books.domain.Genre;
 
 @DataJpaTest
-@Import(JPQLGenreRepository.class)
 class GenreRepositoryTest {
 
     @Autowired
@@ -29,7 +27,7 @@ class GenreRepositoryTest {
     @Test
     @DisplayName("should create genre")
     void shouldCreateGenre() {
-        var genre = genreRepository.insert("Drama");
+        var genre = genreRepository.save(new Genre(0, "Drama"));
 
         assertThat(genre.getId()).isPositive();
         assertThat(genre.getName()).isEqualTo("Drama");

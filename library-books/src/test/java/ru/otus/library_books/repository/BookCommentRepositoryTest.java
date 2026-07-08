@@ -6,10 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import ru.otus.library_books.domain.Book;
+import ru.otus.library_books.domain.BookComment;
 
 @DataJpaTest
-@Import({JPQLBookCommentRepository.class, JPQLBookRepository.class, JPQLAuthorRepository.class, JPQLGenreRepository.class})
 class BookCommentRepositoryTest {
 
     @Autowired
@@ -17,6 +17,12 @@ class BookCommentRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Test
     @DisplayName("should find comments by book id")
@@ -30,12 +36,14 @@ class BookCommentRepositoryTest {
     @Test
     @DisplayName("should create and update comment")
     void shouldCreateAndUpdateComment() {
-        var comment = bookCommentRepository.insert("New comment", 1L);
+        var book = bookRepository.getReferenceById(1L);
+        var comment = bookCommentRepository.save(new BookComment(0, "New comment", book));
 
         assertThat(comment.getId()).isPositive();
         assertThat(comment.getText()).isEqualTo("New comment");
 
-        var updatedComment = bookCommentRepository.update(comment.getId(), "Updated comment", 1L);
+        comment.setText("Updated comment");
+        var updatedComment = bookCommentRepository.save(comment);
 
         assertThat(updatedComment.getText()).isEqualTo("Updated comment");
     }
@@ -43,7 +51,9 @@ class BookCommentRepositoryTest {
     @Test
     @DisplayName("should return empty list when book has no comments")
     void shouldReturnEmptyListWhenBookHasNoComments() {
-        var createdBook = bookRepository.insert("Book without comments", 1L, 1L);
+        var authorRef = authorRepository.getReferenceById(1L);
+        var genreRef = genreRepository.getReferenceById(1L);
+        var createdBook = bookRepository.save(new Book(0, "Book without comments", authorRef, genreRef, null));
 
         var comments = bookCommentRepository.findByBookId(createdBook.getId());
 
