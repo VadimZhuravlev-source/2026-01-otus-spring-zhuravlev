@@ -2,6 +2,8 @@ package ru.otus.library_books.service;
 
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,8 @@ public class BookCommentServiceImpl implements BookCommentService {
 
     private final BookCommentRepository bookCommentRepository;
 
-    private final BookService bookService;
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     @Transactional(readOnly = true)
     public List<BookComment> findByBookId(long bookId) {
@@ -28,22 +31,21 @@ public class BookCommentServiceImpl implements BookCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("Comment with id %d not found".formatted(id)));
     }
 
-    @Transactional
     public BookComment create(long bookId, String text) {
-        var book = bookService.findById(bookId);
-        return bookCommentRepository.save(new BookComment(0, text, book));
+        return bookCommentRepository.insert(text, bookId);
     }
 
     @Transactional
     public BookComment update(long id, String text) {
         var comment = findById(id);
         comment.setText(text);
-        return bookCommentRepository.save(comment);
+        entityManager.merge(comment);
+        return comment;
     }
 
     @Transactional
     public void deleteById(long id) {
-        findById(id);
-        bookCommentRepository.deleteById(id);
+        var comment = findById(id);
+        entityManager.remove(comment);
     }
 }

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "book_comments")
+@NamedEntityGraph(name = "BookComment.book",
+        attributeNodes = @NamedAttributeNode("book"))
 public class BookComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

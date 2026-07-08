@@ -68,13 +68,13 @@ class AuthorServiceTest {
     @DisplayName("should create author")
     void shouldCreateAuthor() {
         var savedAuthor = new Author(5L, "Leo Tolstoy");
-        when(authorRepository.save(new Author(0, "Leo Tolstoy"))).thenReturn(savedAuthor);
+        when(authorRepository.insert("Leo Tolstoy")).thenReturn(savedAuthor);
 
         var result = authorService.create("Leo Tolstoy");
 
         assertThat(result).isEqualTo(savedAuthor);
         assertThat(result.getId()).isEqualTo(5L);
         assertThat(result.getFullName()).isEqualTo("Leo Tolstoy");
-        verify(authorRepository).save(new Author(0, "Leo Tolstoy"));
+        verify(authorRepository).insert("Leo Tolstoy");
     }
 }

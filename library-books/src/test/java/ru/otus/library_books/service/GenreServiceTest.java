@@ -68,13 +68,13 @@ class GenreServiceTest {
     @DisplayName("should create genre")
     void shouldCreateGenre() {
         var savedGenre = new Genre(5L, "Science Fiction");
-        when(genreRepository.save(new Genre(0, "Science Fiction"))).thenReturn(savedGenre);
+        when(genreRepository.insert("Science Fiction")).thenReturn(savedGenre);
 
         var result = genreService.create("Science Fiction");
 
         assertThat(result).isEqualTo(savedGenre);
         assertThat(result.getId()).isEqualTo(5L);
         assertThat(result.getName()).isEqualTo("Science Fiction");
-        verify(genreRepository).save(new Genre(0, "Science Fiction"));
+        verify(genreRepository).insert("Science Fiction");
     }
 }

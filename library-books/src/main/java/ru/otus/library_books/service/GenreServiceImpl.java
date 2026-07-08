@@ -24,8 +24,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     public Genre create(String fullName) {
-        Genre newGenre = new Genre(0, fullName);
-        return genreRepository.save(newGenre);
+        return genreRepository.insert(fullName);
     }
 
 }

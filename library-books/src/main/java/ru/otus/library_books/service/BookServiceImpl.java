@@ -5,9 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import ru.otus.library_books.domain.Author;
 import ru.otus.library_books.domain.Book;
-import ru.otus.library_books.domain.Genre;
 import ru.otus.library_books.repository.BookRepository;
 
 @Service
@@ -15,10 +13,6 @@ import ru.otus.library_books.repository.BookRepository;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
-    private final AuthorService authorService;
-
-    private final GenreService genreService;
 
     public List<Book> findAll() {
         return bookRepository.findAll();
@@ -30,20 +24,11 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book create(String title, long authorId, long genreId) {
-        Author foundAuthor = authorService.findById(authorId);
-        Genre foundGenre = genreService.findById(genreId);
-        Book newBook = new Book(0, title, foundAuthor, foundGenre);
-        return bookRepository.save(newBook);
+        return bookRepository.insert(title, authorId, genreId);
     }
 
     public Book update(long id, String title, long authorId, long genreId) {
-        Book foundBook = findById(id);
-        Author foundAuthor = authorService.findById(authorId);
-        Genre foundGenre = genreService.findById(genreId);
-        foundBook.setTitle(title);
-        foundBook.setAuthor(foundAuthor);
-        foundBook.setGenre(foundGenre);
-        return bookRepository.save(foundBook);
+        return bookRepository.update(id, title, authorId, genreId);
     }
 
     public void deleteById(long id) {

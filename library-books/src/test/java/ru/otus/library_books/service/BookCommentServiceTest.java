@@ -3,13 +3,13 @@ package ru.otus.library_books.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class BookCommentServiceTest {
     private BookCommentRepository bookCommentRepository;
 
     @Mock
-    private BookServiceImpl bookService;
+    private EntityManager entityManager;
 
     @InjectMocks
     private BookCommentServiceImpl bookCommentService;
@@ -79,16 +79,14 @@ class BookCommentServiceTest {
     void shouldCreateComment() {
         var book = createBook(1L);
         var savedComment = new BookComment(5L, "New comment", book);
-        when(bookService.findById(1L)).thenReturn(book);
-        when(bookCommentRepository.save(any(BookComment.class))).thenReturn(savedComment);
+        when(bookCommentRepository.insert("New comment", 1L)).thenReturn(savedComment);
 
         var result = bookCommentService.create(1L, "New comment");
 
         assertThat(result).isEqualTo(savedComment);
         assertThat(result.getText()).isEqualTo("New comment");
         assertThat(result.getBook()).isEqualTo(book);
-        verify(bookService).findById(1L);
-        verify(bookCommentRepository).save(any(BookComment.class));
+        verify(bookCommentRepository).insert("New comment", 1L);
     }
 
     @Test
@@ -96,16 +94,14 @@ class BookCommentServiceTest {
     void shouldUpdateCommentText() {
         var book = createBook(1L);
         var existingComment = new BookComment(1L, "Old text", book);
-        var updatedComment = new BookComment(1L, "Updated text", book);
         when(bookCommentRepository.findById(1L)).thenReturn(Optional.of(existingComment));
-        when(bookCommentRepository.save(existingComment)).thenReturn(updatedComment);
 
         var result = bookCommentService.update(1L, "Updated text");
 
-        assertThat(result).isEqualTo(updatedComment);
+        assertThat(result).isEqualTo(existingComment);
         assertThat(result.getText()).isEqualTo("Updated text");
         verify(bookCommentRepository).findById(1L);
-        verify(bookCommentRepository).save(existingComment);
+        verify(entityManager).merge(existingComment);
     }
 
     @Test
@@ -118,7 +114,7 @@ class BookCommentServiceTest {
         assertThatCode(() -> bookCommentService.deleteById(1L)).doesNotThrowAnyException();
 
         verify(bookCommentRepository).findById(1L);
-        verify(bookCommentRepository).deleteById(1L);
+        verify(entityManager).remove(comment);
     }
 
     @Test
@@ -135,6 +131,6 @@ class BookCommentServiceTest {
     private Book createBook(long id) {
         var author = new Author(1L, "Fyodor Dostoevsky");
         var genre = new Genre(1L, "Psychological Fiction");
-        return new Book(id, "Crime and Punishment", author, genre);
+        return new Book(id, "Crime and Punishment", author, genre, null);
     }
 }

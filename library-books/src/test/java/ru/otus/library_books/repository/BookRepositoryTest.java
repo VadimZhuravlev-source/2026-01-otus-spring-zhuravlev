@@ -5,21 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import ru.otus.library_books.domain.Book;
 
 @DataJpaTest
+@Import({JPQLBookRepository.class, JPQLAuthorRepository.class, JPQLGenreRepository.class})
 class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
-    private GenreRepository genreRepository;
 
     @Test
     @DisplayName("should find all books")
@@ -38,15 +33,12 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should create update and delete book")
     void shouldCreateUpdateAndDeleteBook() {
-        var author = authorRepository.findById(1L).orElseThrow();
-        var genre = genreRepository.findById(1L).orElseThrow();
-        var book = bookRepository.save(new Book(0, "The Idiot", author, genre));
+        var book = bookRepository.insert("The Idiot", 1L, 1L);
 
         assertThat(book.getId()).isPositive();
         assertThat(book.getTitle()).isEqualTo("The Idiot");
 
-        book.setTitle("Updated title");
-        var updatedBook = bookRepository.save(book);
+        var updatedBook = bookRepository.update(book.getId(), "Updated title", 1L, 1L);
 
         assertThat(updatedBook.getTitle()).isEqualTo("Updated title");
 
@@ -54,6 +46,7 @@ class BookRepositoryTest {
 
         assertThat(bookRepository.findById(updatedBook.getId())).isEmpty();
     }
+
     @Test
     @DisplayName("should find seeded book by id")
     void shouldFindSeededBookById() {
@@ -64,10 +57,10 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should check book existence")
-    void shouldCheckBookExistence() {
-        assertThat(bookRepository.existsById(1L)).isTrue();
-        assertThat(bookRepository.existsById(100L)).isFalse();
-    }
+    @DisplayName("should return empty optional for missing book")
+    void shouldReturnEmptyOptionalForMissingBook() {
+        var book = bookRepository.findById(100L);
 
+        assertThat(book).isEmpty();
+    }
 }

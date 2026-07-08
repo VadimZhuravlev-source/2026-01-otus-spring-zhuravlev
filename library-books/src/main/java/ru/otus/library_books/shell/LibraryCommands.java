@@ -109,8 +109,9 @@ public class LibraryCommands {
     }
 
     private String formatBook(Book book) {
-        return "%d. %s | %s | %s".formatted(
-                book.getId(), book.getTitle(), book.getAuthor().getFullName(), book.getGenre().getName());
+        return "%d. %s | %s | %s | comments: %s".formatted(
+                book.getId(), book.getTitle(), book.getAuthor().getFullName(), book.getGenre().getName(),
+                String.join( " | ", book.getBookComments().stream().map(BookComment::getText).toList()));
     }
 
     private String formatAuthor(Author author) {

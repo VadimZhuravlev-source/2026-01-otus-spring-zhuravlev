@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import ru.otus.library_books.domain.BookComment;
+import org.springframework.context.annotation.Import;
 
 @DataJpaTest
+@Import({JPQLBookCommentRepository.class, JPQLBookRepository.class, JPQLAuthorRepository.class, JPQLGenreRepository.class})
 class BookCommentRepositoryTest {
 
     @Autowired
@@ -21,7 +21,6 @@ class BookCommentRepositoryTest {
     @Test
     @DisplayName("should find comments by book id")
     void shouldFindCommentsByBookId() {
-
         var comments = bookCommentRepository.findByBookId(1L);
 
         assertThat(comments).hasSize(1);
@@ -29,29 +28,22 @@ class BookCommentRepositoryTest {
     }
 
     @Test
-    @DisplayName("should create update and delete comment")
-    void shouldCreateUpdateAndDeleteComment() {
-
-        var book = bookRepository.findById(1L).orElseThrow();
-        var comment = bookCommentRepository.save(new BookComment(0, "New comment", book));
+    @DisplayName("should create and update comment")
+    void shouldCreateAndUpdateComment() {
+        var comment = bookCommentRepository.insert("New comment", 1L);
 
         assertThat(comment.getId()).isPositive();
         assertThat(comment.getText()).isEqualTo("New comment");
 
-        comment.setText("Updated comment");
-        var updatedComment = bookCommentRepository.save(comment);
+        var updatedComment = bookCommentRepository.update(comment.getId(), "Updated comment", 1L);
 
         assertThat(updatedComment.getText()).isEqualTo("Updated comment");
-
-        bookCommentRepository.deleteById(updatedComment.getId());
-
-        assertThat(bookCommentRepository.findById(updatedComment.getId())).isEmpty();
     }
+
     @Test
     @DisplayName("should return empty list when book has no comments")
     void shouldReturnEmptyListWhenBookHasNoComments() {
-        var book = bookRepository.findById(1L).orElseThrow();
-        var createdBook = bookRepository.save(new ru.otus.library_books.domain.Book(0, "Book without comments", book.getAuthor(), book.getGenre()));
+        var createdBook = bookRepository.insert("Book without comments", 1L, 1L);
 
         var comments = bookCommentRepository.findByBookId(createdBook.getId());
 

@@ -24,8 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public Author create(String name) {
-        Author newGenre = new Author(0, name);
-        return authorRepository.save(newGenre);
+        return authorRepository.insert(name);
     }
 
 }

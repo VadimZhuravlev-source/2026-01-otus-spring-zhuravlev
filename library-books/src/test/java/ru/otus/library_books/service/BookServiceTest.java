@@ -3,7 +3,6 @@ package ru.otus.library_books.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,12 +27,6 @@ class BookServiceTest {
     @Mock
     private BookRepository bookRepository;
 
-    @Mock
-    private AuthorServiceImpl authorService;
-
-    @Mock
-    private GenreServiceImpl genreService;
-
     @InjectMocks
     private BookServiceImpl bookService;
 
@@ -42,8 +35,8 @@ class BookServiceTest {
     void shouldFindAllBooks() {
         var author = new Author(1L, "Fyodor Dostoevsky");
         var genre = new Genre(1L, "Psychological Fiction");
-        var book1 = new Book(1L, "Crime and Punishment", author, genre);
-        var book2 = new Book(2L, "The Idiot", author, genre);
+        var book1 = new Book(1L, "Crime and Punishment", author, genre, null);
+        var book2 = new Book(2L, "The Idiot", author, genre, null);
         when(bookRepository.findAll()).thenReturn(List.of(book1, book2));
 
         var books = bookService.findAll();
@@ -58,7 +51,7 @@ class BookServiceTest {
     void shouldFindBookById() {
         var author = new Author(1L, "Fyodor Dostoevsky");
         var genre = new Genre(1L, "Psychological Fiction");
-        var book = new Book(1L, "Crime and Punishment", author, genre);
+        var book = new Book(1L, "Crime and Punishment", author, genre, null);
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
         var result = bookService.findById(1L);
@@ -83,11 +76,9 @@ class BookServiceTest {
     void shouldCreateBook() {
         var author = new Author(1L, "Fyodor Dostoevsky");
         var genre = new Genre(1L, "Psychological Fiction");
-        var savedBook = new Book(4L, "The Gambler", author, genre);
+        var savedBook = new Book(4L, "The Gambler", author, genre, null);
 
-        when(authorService.findById(1L)).thenReturn(author);
-        when(genreService.findById(1L)).thenReturn(genre);
-        when(bookRepository.save(any(Book.class))).thenReturn(savedBook);
+        when(bookRepository.insert("The Gambler", 1L, 1L)).thenReturn(savedBook);
 
         var result = bookService.create("The Gambler", 1L, 1L);
 
@@ -95,25 +86,17 @@ class BookServiceTest {
         assertThat(result.getTitle()).isEqualTo("The Gambler");
         assertThat(result.getAuthor()).isEqualTo(author);
         assertThat(result.getGenre()).isEqualTo(genre);
-        verify(authorService).findById(1L);
-        verify(genreService).findById(1L);
-        verify(bookRepository).save(any(Book.class));
+        verify(bookRepository).insert("The Gambler", 1L, 1L);
     }
 
     @Test
     @DisplayName("should update book")
     void shouldUpdateBook() {
-        var author = new Author(1L, "Fyodor Dostoevsky");
-        var genre = new Genre(1L, "Psychological Fiction");
-        var existingBook = new Book(1L, "Old Title", author, genre);
         var newAuthor = new Author(2L, "Jules Verne");
         var newGenre = new Genre(2L, "Adventure");
-        var updatedBook = new Book(1L, "New Title", newAuthor, newGenre);
+        var updatedBook = new Book(1L, "New Title", newAuthor, newGenre, null);
 
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(existingBook));
-        when(authorService.findById(2L)).thenReturn(newAuthor);
-        when(genreService.findById(2L)).thenReturn(newGenre);
-        when(bookRepository.save(existingBook)).thenReturn(updatedBook);
+        when(bookRepository.update(1L, "New Title", 2L, 2L)).thenReturn(updatedBook);
 
         var result = bookService.update(1L, "New Title", 2L, 2L);
 
@@ -121,10 +104,7 @@ class BookServiceTest {
         assertThat(result.getTitle()).isEqualTo("New Title");
         assertThat(result.getAuthor()).isEqualTo(newAuthor);
         assertThat(result.getGenre()).isEqualTo(newGenre);
-        verify(bookRepository).findById(1L);
-        verify(authorService).findById(2L);
-        verify(genreService).findById(2L);
-        verify(bookRepository).save(existingBook);
+        verify(bookRepository).update(1L, "New Title", 2L, 2L);
     }
 
     @Test
@@ -132,7 +112,7 @@ class BookServiceTest {
     void shouldDeleteBookById() {
         var author = new Author(1L, "Fyodor Dostoevsky");
         var genre = new Genre(1L, "Psychological Fiction");
-        var book = new Book(1L, "Crime and Punishment", author, genre);
+        var book = new Book(1L, "Crime and Punishment", author, genre, null);
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
         assertThatCode(() -> bookService.deleteById(1L)).doesNotThrowAnyException();
