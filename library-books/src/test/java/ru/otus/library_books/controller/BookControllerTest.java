@@ -17,8 +17,12 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,10 +31,19 @@ import ru.otus.library_books.domain.Author;
 import ru.otus.library_books.domain.Book;
 import ru.otus.library_books.domain.Genre;
 import ru.otus.library_books.service.BookService;
+import ru.otus.library_books.config.JwtAuthenticationFilter;
 import tools.jackson.databind.ObjectMapper;
 
 // Тесты Spring MVC слоя контроллера книг с мокированием сервисного слоя
-@WebMvcTest(BookController.class)
+@WebMvcTest(
+        controllers = BookController.class,
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = JwtAuthenticationFilter.class
+        )
+)
+@AutoConfigureMockMvc(addFilters = false)
+@WithMockUser(username = "user")
 class BookControllerTest {
 
     @Autowired

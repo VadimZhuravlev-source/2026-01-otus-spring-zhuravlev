@@ -19,3 +19,7 @@ spring:
   shell:
     interactive:
       enabled: true
+
+jwt:
+  secret: ${JWT_SECRET:bGlicmFyeS1ib29rcy1qd3Qtc2VjcmV0LWtleS1tdXN0LWJlLWxvbmc=}
+  expiration: ${JWT_EXPIRATION:3600000}
