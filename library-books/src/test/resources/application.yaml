@@ -18,3 +18,7 @@ spring:
   shell:
     interactive:
       enabled: false
+
+jwt:
+  secret: bGlicmFyeS1ib29rcy10ZXN0LWp3dC1zZWNyZXQta2V5
+  expiration: 3600000
